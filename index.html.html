@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+ <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18117456860"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18117456860');
+  function gtag_report_conversion_wa() {
+    gtag('event', 'conversion', {
+      'send_to': 'AW-18117456860/INMlCPLSobQcENznib9D',
+      'value': 1.0,
+      'currency': 'BRL'
+    });
+    return true;
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('a[href*="wa.me/"]').forEach(function (link) {
+      link.addEventListener('click', gtag_report_conversion_wa);
+    });
+  });
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BGL Advogados — Divórcio</title>
