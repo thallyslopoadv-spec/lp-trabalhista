@@ -26,14 +26,26 @@
        ------------------------------------------------------------------ */
     GA4_MEASUREMENT_ID: 'G-92B1N6DHGM',
 
-    /* --- Google Ads (opcional) ------------------------------------------
-       Preencha para carregar a tag do Google Ads e registrar a conversão.
-       GOOGLE_ADS_ID:         'AW-XXXXXXXXXX'
-       GOOGLE_ADS_CONVERSION: 'AW-XXXXXXXXXX/AbC-D_efG-h12_34-567'  <-- rótulo
-       Enquanto vazios, nada é carregado nem disparado.
+    /* --- Google Ads ------------------------------------------------------
+       Conta e rótulo de conversão em uso nas landing pages da BGL.
+       Mesmos valores da LP trabalhista já veiculada.
+       Deixe vazio ('') para desligar a tag do Ads nesta página.
        ------------------------------------------------------------------ */
-    GOOGLE_ADS_ID: '',
-    GOOGLE_ADS_CONVERSION: '',
+    GOOGLE_ADS_ID: 'AW-18117456860',
+    GOOGLE_ADS_CONVERSION: 'AW-18117456860/INMlCPLSobQcENznib9D',
+    GOOGLE_ADS_VALUE: 1.0,
+    GOOGLE_ADS_CURRENCY: 'BRL',
+
+    /* O que conta como conversão para o Google Ads.
+       Na LP anterior só havia WhatsApp; aqui o formulário também converte. */
+    ADS_CONVERSION_ON_WHATSAPP: true,
+    ADS_CONVERSION_ON_FORM: true,
+
+    /* Evita contar duas vezes o mesmo contato — por exemplo, quem envia o
+       formulário e em seguida clica em "Adiantar pelo WhatsApp" na tela de
+       confirmação. Ajuste para false se o Ads estiver configurado para
+       contabilizar "todas" as conversões e você quiser cada disparo.      */
+    ADS_CONVERSION_ONCE_PER_VISIT: true,
 
     /* --- Endpoint do formulário -----------------------------------------
        URL que receberá o POST (JSON) com os dados do formulário.
@@ -222,10 +234,22 @@
     window.dataLayer.push(Object.assign({ event: eventName }, payload));
   }
 
-  function trackAdsConversion() {
-    if (CONFIG.GOOGLE_ADS_CONVERSION && typeof window.gtag === 'function') {
-      window.gtag('event', 'conversion', { send_to: CONFIG.GOOGLE_ADS_CONVERSION });
-    }
+  var adsConversionSent = false;
+
+  function trackAdsConversion(origem) {
+    if (!CONFIG.GOOGLE_ADS_CONVERSION || typeof window.gtag !== 'function') { return; }
+    if (CONFIG.ADS_CONVERSION_ONCE_PER_VISIT && adsConversionSent) { return; }
+
+    adsConversionSent = true;
+
+    var payload = { send_to: CONFIG.GOOGLE_ADS_CONVERSION };
+    if (CONFIG.GOOGLE_ADS_VALUE != null)  { payload.value = CONFIG.GOOGLE_ADS_VALUE; }
+    if (CONFIG.GOOGLE_ADS_CURRENCY)       { payload.currency = CONFIG.GOOGLE_ADS_CURRENCY; }
+
+    window.gtag('event', 'conversion', payload);
+
+    /* Espelha no GA4 para conferir de onde vieram as conversões. */
+    track('ads_conversion', { origem: origem || 'nao-identificado' });
   }
 
   /* ======================================================================
@@ -235,26 +259,19 @@
     'Olá, BGL Advogados. Minha empresa está diante de uma situação trabalhista ' +
     'e gostaria de falar com a equipe.';
 
-  /* Monta a mensagem que chega no WhatsApp da BGL com o formulário já
-     respondido: quem é, o que a empresa recebeu, em que pé está o caso e
-     o relato. Campo vazio simplesmente não entra na mensagem.          */
   function buildWhatsAppMessage(data) {
     if (!data || (!data.nome && !data.empresa)) { return DEFAULT_WA_MESSAGE; }
 
     var nome = data.nome || '[nome não informado]';
     var empresa = data.empresa || '[empresa não informada]';
     var msg = 'Olá, BGL Advogados. Sou ' + nome + ', da empresa ' + empresa + '. ' +
-              'Preenchi o formulário da página de defesa trabalhista empresarial.';
+              'Minha empresa está diante de uma situação trabalhista e gostaria de falar com a equipe.';
 
-    var linhas = [];
-    if (data.whatsapp)  { linhas.push('WhatsApp: ' + data.whatsapp); }
-    if (data.documento) { linhas.push('Documento recebido: ' + data.documento); }
-    if (data.situacao)  { linhas.push('Situação atual: ' + data.situacao); }
-    if (data.assunto)   { linhas.push('Assunto principal: ' + data.assunto); }
-    if (data.audiencia) { linhas.push('Data da audiência: ' + formatDate(data.audiencia)); }
-    if (linhas.length)  { msg += '\n\n' + linhas.join('\n'); }
-
-    if (data.relato)    { msg += '\n\nO que aconteceu:\n' + data.relato; }
+    var extras = [];
+    if (data.situacao)  { extras.push('Situação: ' + data.situacao); }
+    if (data.assunto)   { extras.push('Assunto: ' + data.assunto); }
+    if (data.audiencia) { extras.push('Data da audiência: ' + formatDate(data.audiencia)); }
+    if (extras.length)  { msg += '\n\n' + extras.join('\n'); }
 
     return msg;
   }
@@ -295,6 +312,7 @@
 
       if (el.hasAttribute('data-wa')) {
         track('whatsapp_click', { location: local, link_text: label });
+        if (CONFIG.ADS_CONVERSION_ON_WHATSAPP) { trackAdsConversion('whatsapp:' + local); }
       } else if (el.hasAttribute('data-reviews-link')) {
         track('google_reviews_click', { location: local, link_text: label });
       } else {
@@ -461,6 +479,7 @@
     if (!form) { return; }
 
     var success = $('#form-sucesso');
+    var submitBtn = $('#form-submit');
     var started = false;
 
     /* form_start: primeira interação real do usuário com o formulário. */
@@ -482,74 +501,46 @@
         return;
       }
 
-      var message = buildWhatsAppMessage(data);
-      var url = whatsappURL(message);
-
-      /* ------------------------------------------------------------------
-         O WhatsApp abre PRIMEIRO e de forma SÍNCRONA.
-
-         Navegadores só autorizam abrir uma janela enquanto o clique do
-         usuário ainda está "quente": qualquer espera (o POST ao CRM, uma
-         Promise, um await) faz o iOS Safari e o Chrome bloquearem o popup.
-         Por isso a abertura vem antes do envio e do tracking — o resto
-         acontece em seguida, sem segurar o contato.
-         ------------------------------------------------------------------ */
-      openWhatsApp(url);
-
       var payload = Object.assign({}, data, TRACKING, {
         origem: 'LP Defesa Trabalhista Empresarial',
-        canal: 'whatsapp',
-        mensagem_whatsapp: message,
         enviado_em: new Date().toISOString(),
         pagina: window.location.href
       });
 
-      track('form_submit', {
-        location: 'formulario',
-        assunto: data.assunto || '',
-        situacao: data.situacao || '',
-        destino: 'whatsapp'
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+
+      send(payload).then(function () {
+        track('form_submit', { location: 'formulario', assunto: data.assunto || '', situacao: data.situacao || '' });
+        if (CONFIG.ADS_CONVERSION_ON_FORM) { trackAdsConversion('formulario'); }
+        showSuccess(form, success, data);
+      }).catch(function () {
+        /* Falha de rede: o contato não pode se perder — o usuário é levado
+           ao WhatsApp com os mesmos dados já preenchidos. Como ele vê a mesma
+           tela de confirmação, a conversão também precisa ser contabilizada,
+           sob pena de o Ads subcontar leads que de fato aconteceram.      */
+        track('form_submit', { location: 'formulario', status: 'fallback_whatsapp' });
+        if (CONFIG.ADS_CONVERSION_ON_FORM) { trackAdsConversion('formulario-contingencia'); }
+        showSuccess(form, success, data);
       });
-      trackAdsConversion();
-      track('whatsapp_click', { location: 'formulario-envio' });
-
-      /* Cópia para o CRM, quando houver endpoint. Não bloqueia nada: o
-         contato já está a caminho do WhatsApp mesmo que o POST falhe.   */
-      send(payload);
-
-      showSuccess(form, success, data);
     });
-
-    /* Abre em nova aba para não perder a página; se o navegador bloquear
-       a aba (política de popup), navega na própria aba — em nenhum dos
-       dois casos o usuário fica sem o WhatsApp.                         */
-    function openWhatsApp(url) {
-      if (!url || url === '#') { return; }
-      var win = null;
-      try { win = window.open(url, '_blank'); } catch (e) { win = null; }
-      if (!win) { window.location.href = url; return; }
-      try { win.opener = null; } catch (e) {}
-    }
 
     function send(payload) {
       if (!CONFIG.FORM_ENDPOINT) {
-        /* Sem endpoint configurado: nada é enviado para fora. O contato
-           não depende disso — ele foi pelo WhatsApp.                    */
+        /* Sem endpoint configurado: nada é enviado para fora. */
         if (window.console && console.info) {
           console.info('[BGL LP] FORM_ENDPOINT não configurado. Dados capturados:', payload);
         }
-        return;
+        return Promise.resolve();
       }
-      try {
-        fetch(CONFIG.FORM_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          /* keepalive: a requisição sobrevive à saída da página quando o
-             WhatsApp abre na mesma aba.                                 */
-          keepalive: true
-        })['catch'](function () { /* silencioso: o WhatsApp já foi aberto */ });
-      } catch (e) { /* idem */ }
+      return fetch(CONFIG.FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        if (!r.ok) { throw new Error('HTTP ' + r.status); }
+        return r;
+      });
     }
   }
 

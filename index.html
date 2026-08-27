@@ -37,19 +37,18 @@
   <meta property="og:title" content="Defesa Trabalhista para Empresas | BGL Advogados">
   <meta property="og:description" content="Defesa trabalhista empresarial para empresas que receberam reclamações, citações ou notificações. Conheça a atuação da BGL Advogados.">
   <meta property="og:url" content="https://www.bgladvogados.com.br/defesa-trabalhista/">
-  <meta property="og:image" content="https://www.bgladvogados.com.br/defesa-trabalhista/assets/og-image.jpg">
+  <meta property="og:image" content="https://www.bgladvogados.com.br/assets/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:alt" content="BGL Advogados — Brito Galvão & Lopo Advogados, Goiânia/GO">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Defesa Trabalhista para Empresas | BGL Advogados">
   <meta name="twitter:description" content="Defesa trabalhista empresarial para empresas que receberam reclamações, citações ou notificações. Conheça a atuação da BGL Advogados.">
-  <meta name="twitter:image" content="https://www.bgladvogados.com.br/defesa-trabalhista/assets/og-image.jpg">
+  <meta name="twitter:image" content="https://www.bgladvogados.com.br/assets/og-image.jpg">
 
   <!-- Ícones -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
   <meta name="theme-color" content="#0e1a2e">
 
   <!-- Tipografia da identidade BGL -->
@@ -57,7 +56,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 
-  <link rel="preload" as="image" href="assets/thallys-lopo.jpg">
+  <link rel="preload" as="image" href="../assets/office-detail.jpg">
   <link rel="stylesheet" href="lp.css">
 
   <!-- Dados estruturados -->
@@ -68,8 +67,8 @@
     "name": "BGL Advogados — Brito Galvão & Lopo Advogados",
     "description": "Defesa trabalhista empresarial: atuação na defesa de empresas em reclamações e processos trabalhistas.",
     "url": "https://www.bgladvogados.com.br/defesa-trabalhista/",
-    "logo": "https://www.bgladvogados.com.br/defesa-trabalhista/assets/logo-bgl.png",
-    "image": "https://www.bgladvogados.com.br/defesa-trabalhista/assets/office-hero.jpg",
+    "logo": "https://www.bgladvogados.com.br/assets/logo-bgl.png",
+    "image": "https://www.bgladvogados.com.br/assets/office-hero.jpg",
     "email": "contato@bgladvogados.com.br",
     "telephone": "+55-62-99250-9988",
     "areaServed": "Goiânia, Goiás, Brasil",
@@ -140,7 +139,7 @@
   <header class="topbar">
     <div class="container topbar__inner">
       <div class="topbar__brand">
-        <img src="assets/logo-mark.png" alt="BGL Advogados" width="440" height="280" style="height:30px;width:auto">
+        <img src="../assets/logo-mark.png" alt="BGL Advogados" width="440" height="280" style="height:30px;width:auto">
         <span class="topbar__tag">Defesa Trabalhista<br>Empresarial</span>
       </div>
       <div class="topbar__actions">
@@ -179,18 +178,12 @@
           <p class="hero__trust">Defesa trabalhista empresarial &middot; BGL Advogados &middot; Goiânia/GO</p>
         </div>
 
-        <!-- Retrato institucional real do sócio que conduz o atendimento.
-             Em LP de conversão a foto do advogado responde melhor que a do
-             ambiente: dá rosto e nome a quem vai atender. A legenda traz
-             nome e OAB, como exige a publicidade advocatícia.
-             Para usar a outra sócia, troque o arquivo por
-             assets/cecilia-galvao.jpg e ajuste alt, legenda e o preload
-             no <head>. -->
+        <!-- Fotografia real do escritório da BGL (Edifício Terra Office). -->
         <figure class="hero__media reveal" data-delay="1">
-          <img src="assets/thallys-lopo.jpg"
-               alt="Thallys Lopo, sócio-fundador da BGL Advogados, responsável pelo atendimento"
+          <img src="../assets/office-detail.jpg"
+               alt="Ambiente do escritório da BGL Advogados em Goiânia"
                width="900" height="1125" fetchpriority="high" decoding="async">
-          <figcaption class="hero__caption">Thallys Lopo &middot; Sócio-fundador &middot; OAB/GO 75.672</figcaption>
+          <figcaption class="hero__caption">Escritório da BGL &middot; Edifício Terra Office, Goiânia/GO</figcaption>
         </figure>
       </div>
     </section>
@@ -398,16 +391,25 @@
         </ul>
       </div>
     </section>
+
     <!-- ==================================================================
          08 · CONHEÇA A BGL — GALERIA COM FOTOGRAFIAS REAIS
          ------------------------------------------------------------------
-         Em exibição, as três fotografias reais do escritório disponíveis
-         em /assets/ (sala de reunião, ambiente de trabalho e detalhe do
-         ambiente) mais o bloco de endereço, que fecha o mosaico.
+         Todas as imagens abaixo são fotografias reais do escritório da BGL,
+         já publicadas no site institucional.
 
-         As fotografias adicionais (fachada, recepção, sala dos advogados
-         e equipe) estão preparadas e comentadas logo abaixo — ver a
-         instrução de ativação junto ao bloco.
+         ESPAÇOS RESERVADOS (data-photo-slot):
+         basta salvar os arquivos reais nos caminhos indicados para que
+         apareçam automaticamente. Enquanto o arquivo não existir, o espaço
+         é removido pelo lp.js — nada quebra e nenhuma imagem genérica é
+         exibida no lugar.
+
+           /assets/escritorio/bgl-01.jpg  →  fachada / entrada
+           /assets/escritorio/bgl-02.jpg  →  recepção
+           /assets/escritorio/bgl-03.jpg  →  sala dos advogados
+           /assets/escritorio/bgl-04.jpg  →  equipe (foto institucional)
+
+         Proporção sugerida: 3:4 (retrato). Ex.: 1100 x 1466 px.
          ================================================================== -->
     <section class="section band-cream-bright" id="escritorio">
       <div class="container">
@@ -420,51 +422,39 @@
         <div class="gallery reveal">
           <!-- Fotografias reais já disponíveis -->
           <figure class="shot shot--lead">
-            <img src="assets/office-hero.jpg" alt="Sala de reunião do escritório da BGL Advogados em Goiânia" width="1200" height="1800" loading="lazy" decoding="async">
+            <img src="../assets/office-hero.jpg" alt="Sala de reunião do escritório da BGL Advogados em Goiânia" width="1200" height="1800" loading="lazy" decoding="async">
             <figcaption>Sala de reunião</figcaption>
           </figure>
           <figure class="shot">
-            <img src="assets/office-sobre.jpg" alt="Ambiente de trabalho do escritório da BGL Advogados" width="1000" height="1250" loading="lazy" decoding="async">
-            <figcaption>Ambiente de trabalho</figcaption>
+            <img src="../assets/gallery-espera.jpg" alt="Espaço de espera do escritório da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
+            <figcaption>Espaço de espera</figcaption>
           </figure>
           <figure class="shot">
-            <img src="assets/office-detail.jpg" alt="Detalhe do ambiente do escritório da BGL Advogados" width="900" height="1125" loading="lazy" decoding="async">
+            <img src="../assets/gallery-titulos.jpg" alt="Parede com diplomas e títulos acadêmicos dos sócios da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
+            <figcaption>Formação e títulos</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="../assets/office-detail.jpg" alt="Detalhe do ambiente do escritório da BGL Advogados" width="900" height="1125" loading="lazy" decoding="async">
             <figcaption>Detalhes do ambiente</figcaption>
           </figure>
 
-          <!-- ============================================================
-               ESPAÇOS RESERVADOS — DESATIVADOS ATÉ AS FOTOS EXISTIREM
-               ------------------------------------------------------------
-               Enquanto os arquivos abaixo não estiverem em /assets/escritorio/,
-               estes blocos ficam comentados: assim a página sobe sem nenhuma
-               requisição 404 e sem erro no console do navegador.
-
-               PARA ATIVAR: salve a(s) foto(s) no caminho indicado e retire
-               este comentário (a linha logo abaixo e a linha de fechamento).
-               O lp.js exibe automaticamente as que existirem e remove as que
-               ainda não existirem — nada quebra.
-
-               Proporção: 3:4 (retrato), ex.: 1100 x 1466 px, até ~250 KB.
-               Acrescente de 4 em 4 para o mosaico do desktop continuar fechado.
-               ============================================================ -->
-          <!--
+          <!-- Espaços reservados para as demais fotografias reais -->
           <figure class="shot" data-photo-slot="fachada">
-            <img data-src="assets/escritorio/bgl-01.jpg" alt="Fachada e entrada do escritório da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
+            <img data-src="../assets/escritorio/bgl-01.jpg" alt="Fachada e entrada do escritório da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
             <figcaption>Fachada e entrada</figcaption>
           </figure>
           <figure class="shot" data-photo-slot="recepcao">
-            <img data-src="assets/escritorio/bgl-02.jpg" alt="Recepção do escritório da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
+            <img data-src="../assets/escritorio/bgl-02.jpg" alt="Recepção do escritório da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
             <figcaption>Recepção</figcaption>
           </figure>
           <figure class="shot" data-photo-slot="sala-advogados">
-            <img data-src="assets/escritorio/bgl-03.jpg" alt="Sala dos advogados da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
+            <img data-src="../assets/escritorio/bgl-03.jpg" alt="Sala dos advogados da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
             <figcaption>Sala dos advogados</figcaption>
           </figure>
           <figure class="shot" data-photo-slot="equipe">
-            <img data-src="assets/escritorio/bgl-04.jpg" alt="Equipe da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
+            <img data-src="../assets/escritorio/bgl-04.jpg" alt="Equipe da BGL Advogados" width="1100" height="1466" loading="lazy" decoding="async">
             <figcaption>Equipe</figcaption>
           </figure>
-          -->
 
           <!-- Bloco de endereço integrado à composição (fecha a grade) -->
           <div class="tile">
@@ -491,27 +481,23 @@
 
           <article class="person">
             <figure class="person__photo">
-              <img src="assets/thallys-lopo.jpg" alt="Retrato de Thallys Lopo, sócio-fundador da BGL Advogados" width="900" height="1125" loading="lazy" decoding="async">
-              <figcaption class="person__id">
-                <span class="person__name">Thallys Lopo</span>
-                <span class="person__role">Sócio-fundador &middot; OAB/GO 75.672</span>
-              </figcaption>
+              <img src="../assets/thallys-lopo.jpg" alt="Retrato de Thallys Lopo, sócio-fundador da BGL Advogados" width="900" height="1125" loading="lazy" decoding="async">
             </figure>
-            <div class="person__bio">
-              <p>Conduz a defesa de empresas em reclamações trabalhistas, da leitura inicial do processo à audiência. Atua também na revisão de contratos e rotinas de trabalho, para reduzir a exposição da empresa a novas ações.</p>
+            <div>
+              <h4 class="person__name">Thallys Lopo</h4>
+              <span class="person__role">Sócio-fundador &middot; OAB/GO 75.672</span>
+              <p>Atuação nas áreas empresarial, trabalhista e contratual, com foco em assessoria preventiva e defesa de empresas.</p>
             </div>
           </article>
 
           <article class="person">
             <figure class="person__photo">
-              <img src="assets/cecilia-galvao-card.jpg" alt="Retrato de Cecília Brito Galvão, sócia-fundadora da BGL Advogados" width="900" height="1125" loading="lazy" decoding="async">
-              <figcaption class="person__id">
-                <span class="person__name">Cecília Brito Galvão</span>
-                <span class="person__role">Sócia-fundadora &middot; OAB/GO 72.929</span>
-              </figcaption>
+              <img src="../assets/cecilia-galvao.jpg" alt="Retrato de Cecília Brito Galvão, sócia-fundadora da BGL Advogados" width="900" height="1125" loading="lazy" decoding="async">
             </figure>
-            <div class="person__bio">
-              <p>Atua no contencioso e no consultivo empresarial, com atenção ao alcance patrimonial da reclamação trabalhista — inclusive quando a execução avança sobre bens da empresa e dos sócios.</p>
+            <div>
+              <h4 class="person__name">Cecília Brito Galvão</h4>
+              <span class="person__role">Sócia-fundadora &middot; OAB/GO 72.929</span>
+              <p>Atuação no consultivo e no contencioso, com especialização nas áreas civil, empresarial e de proteção patrimonial.</p>
             </div>
           </article>
         </div>
@@ -677,8 +663,8 @@
             </div>
 
             <p class="lgpd-note">
-              Ao enviar, suas respostas são encaminhadas por WhatsApp à BGL Advogados e
-              utilizadas para entrar em contato e analisar a solicitação
+              Ao enviar seus dados, você declara estar ciente de que as informações serão
+              utilizadas pela BGL Advogados para entrar em contato e analisar a solicitação
               apresentada, nos termos da Política de Privacidade.
             </p>
 
@@ -690,14 +676,10 @@
             <input type="hidden" id="f_utm_term"     name="utm_term">
             <input type="hidden" id="f_gclid"        name="gclid">
 
-            <button type="submit" class="btn btn--wa btn--wide" id="form-submit" data-cta data-location="formulario" data-cta-label="Enviar pelo WhatsApp (envio)">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.95 1.16-.17.2-.35.22-.65.08-.3-.15-1.25-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35zM12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>
-              Enviar para o WhatsApp da BGL
-            </button>
+            <button type="submit" class="btn btn--primary btn--wide" id="form-submit" data-cta data-location="formulario" data-cta-label="Solicitar contato (envio)">Solicitar contato</button>
 
             <p class="form-alt">
-              Ao enviar, o WhatsApp da BGL abre com suas respostas já escritas —
-              basta tocar em enviar na conversa.
+              Prefere falar agora? <a data-wa data-location="formulario-alt" href="#">Fale com a BGL pelo WhatsApp</a>.
             </p>
           </form>
 
@@ -706,12 +688,12 @@
             <div class="form-success__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m5 12.5 4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <h3>Abrimos o WhatsApp com suas respostas.</h3>
-            <p>É só enviar a mensagem na conversa que abriu. Se ela não abriu — alguns navegadores bloqueiam —, use o botão abaixo.</p>
+            <h3>Recebemos suas informações.</h3>
+            <p>A equipe da BGL Advogados entrará em contato para compreender melhor a situação apresentada.</p>
             <div class="actions actions--center" style="margin-top:1.8rem">
               <a class="btn btn--wa" id="sucesso-whatsapp" data-wa data-location="pos-envio" href="#" target="_blank" rel="noopener">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.95 1.16-.17.2-.35.22-.65.08-.3-.15-1.25-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35zM12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>
-                Abrir o WhatsApp da BGL
+                Adiantar pelo WhatsApp
               </a>
             </div>
           </div>
@@ -793,7 +775,7 @@
     <div class="container">
       <div class="footer__top">
         <div class="footer__brand">
-          <img src="assets/logo-bgl.png" alt="BGL Advogados — Brito Galvão &amp; Lopo Advogados" width="760" height="546" loading="lazy" style="height:52px;width:auto">
+          <img src="../assets/logo-bgl.png" alt="BGL Advogados — Brito Galvão &amp; Lopo Advogados" width="760" height="546" loading="lazy" style="height:52px;width:auto">
           <p>Advocacia empresarial em Goiânia. Defesa trabalhista empresarial, contratos, estrutura societária e contencioso cível.</p>
         </div>
 
