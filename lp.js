@@ -47,6 +47,12 @@
        contabilizar "todas" as conversões e você quiser cada disparo.      */
     ADS_CONVERSION_ONCE_PER_VISIT: true,
 
+    /* --- Comportamento após o envio do formulário ------------------------
+       true  = abre o WhatsApp automaticamente, já com os dados preenchidos.
+       false = apenas exibe a confirmação, com botão manual de WhatsApp.
+       ------------------------------------------------------------------ */
+    WHATSAPP_APOS_ENVIO: true,
+
     /* --- Endpoint do formulário -----------------------------------------
        URL que receberá o POST (JSON) com os dados do formulário.
        Ex.: webhook do CRM, Zapier/Make, Apps Script, API própria.
@@ -507,22 +513,41 @@
         pagina: window.location.href
       });
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando…';
+      var waHref = whatsappURL(buildWhatsAppMessage(data));
 
-      send(payload).then(function () {
-        track('form_submit', { location: 'formulario', assunto: data.assunto || '', situacao: data.situacao || '' });
-        if (CONFIG.ADS_CONVERSION_ON_FORM) { trackAdsConversion('formulario'); }
-        showSuccess(form, success, data);
-      }).catch(function () {
-        /* Falha de rede: o contato não pode se perder — o usuário é levado
-           ao WhatsApp com os mesmos dados já preenchidos. Como ele vê a mesma
-           tela de confirmação, a conversão também precisa ser contabilizada,
-           sob pena de o Ads subcontar leads que de fato aconteceram.      */
-        track('form_submit', { location: 'formulario', status: 'fallback_whatsapp' });
-        if (CONFIG.ADS_CONVERSION_ON_FORM) { trackAdsConversion('formulario-contingencia'); }
-        showSuccess(form, success, data);
+      /* 1. Eventos primeiro: são disparados de forma síncrona, antes de
+            qualquer navegação, para não se perderem no caminho.          */
+      track('form_submit', {
+        location: 'formulario',
+        assunto: data.assunto || '',
+        situacao: data.situacao || '',
+        destino: CONFIG.WHATSAPP_APOS_ENVIO ? 'whatsapp' : 'confirmacao'
       });
+      if (CONFIG.ADS_CONVERSION_ON_FORM) { trackAdsConversion('formulario'); }
+
+      /* 2. Abre o WhatsApp ainda dentro do gesto do usuário. Feito aqui, e
+            não depois do envio, porque o bloqueador de pop-up do navegador
+            recusa janelas abertas fora do clique original.                */
+      var janela = null;
+      if (CONFIG.WHATSAPP_APOS_ENVIO) {
+        janela = window.open(waHref, '_blank');
+      }
+
+      /* 3. Confirma na página — também serve de alternativa caso a janela
+            tenha sido bloqueada.                                          */
+      showSuccess(form, success, waHref);
+
+      /* 4. Envia os dados em segundo plano. Com keepalive, a requisição
+            sobrevive mesmo se a aba navegar para o WhatsApp em seguida.   */
+      send(payload).catch(function () {
+        track('form_submit', { location: 'formulario', status: 'falha_envio' });
+      });
+
+      /* 5. Pop-up bloqueado (comum em navegadores dentro de apps): navega na
+            própria aba, com uma folga para os eventos saírem.             */
+      if (CONFIG.WHATSAPP_APOS_ENVIO && !janela) {
+        window.setTimeout(function () { window.location.href = waHref; }, 900);
+      }
     });
 
     function send(payload) {
@@ -536,7 +561,8 @@
       return fetch(CONFIG.FORM_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        keepalive: true
       }).then(function (r) {
         if (!r.ok) { throw new Error('HTTP ' + r.status); }
         return r;
@@ -595,14 +621,23 @@
     $$('[aria-invalid]', form).forEach(function (el) { el.removeAttribute('aria-invalid'); });
   }
 
-  function showSuccess(form, success, data) {
-    var message = buildWhatsAppMessage(data);
+  function showSuccess(form, success, waHref) {
     var waBtn = $('#sucesso-whatsapp');
     if (waBtn) {
-      waBtn.setAttribute('href', whatsappURL(message));
+      waBtn.setAttribute('href', waHref);
       waBtn.setAttribute('target', '_blank');
       waBtn.setAttribute('rel', 'noopener');
     }
+
+    /* A mensagem muda conforme o destino: quem é levado ao WhatsApp precisa
+       saber disso, e precisa de uma saída caso a janela não abra.         */
+    var msgWhats  = $('[data-sucesso-msg="whatsapp"]', success);
+    var msgPadrao = $('[data-sucesso-msg="padrao"]', success);
+    if (msgWhats && msgPadrao) {
+      msgWhats.hidden  = !CONFIG.WHATSAPP_APOS_ENVIO;
+      msgPadrao.hidden = !!CONFIG.WHATSAPP_APOS_ENVIO;
+    }
+
     form.hidden = true;
     if (success) {
       success.classList.add('is-visible');
